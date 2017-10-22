@@ -8,7 +8,7 @@ import android.widget.TextView;
 import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.io.android.AudioDispatcherFactory;
 
-public class GenomeData extends AppCompatActivity implements ChirpListener {
+public class GenomeRx extends AppCompatActivity implements ChirpListener {
 
     private static final String[] CONDITIONS =
             {
@@ -75,7 +75,7 @@ public class GenomeData extends AppCompatActivity implements ChirpListener {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        TextView tv = new TextView(GenomeData.this);
+                        TextView tv = new TextView(GenomeRx.this);
                         tv.setText(CONDITIONS[conditionIndex] + ": " + LIKELIHOOD[finalSeverity]);
                         layout.addView(tv);
                     }

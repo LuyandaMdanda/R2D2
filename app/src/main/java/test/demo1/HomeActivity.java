@@ -21,8 +21,13 @@ public class HomeActivity extends AppCompatActivity {
     startActivity(intent);
   }
 
-  public void launchGenome(View view) {
-    Intent intent = new Intent(this, GenomeData.class);
+  public void launchGenomeTx(View view) {
+    Intent intent = new Intent(this, GenomeTx.class);
+    startActivity(intent);
+  }
+
+  public void launchGenomeRx(View view) {
+    Intent intent = new Intent(this, GenomeRx.class);
     startActivity(intent);
   }
 }
