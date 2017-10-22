@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
         'k', 'l', 'm', 'n', 'o',
         'p', 'q', 'r', 's', 't',
         'u', 'v', 'w', 'x', 'y',
-        'z', ' ', '0', '1', '2',
+        'z', '\n', '0', '1', '2',
         '3', '4', '5', '6', '7',
-        '8', '9', ',', '.'
+        '8', '9', ',', '.', ' '
     };
 
     private static final int AUDIO_SAMPLE_RATE = 44100;
@@ -156,7 +156,9 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Generates a tone for the audio stream.
      */
-    private final byte[] onGenerateChirp(final String pData, final int pPeriod) {
+    private final byte[] onGenerateChirp(String pData, final int pPeriod) {
+
+        pData = pData + "\n";
         // Calculate the Number of Samples per chirp.
         final int lNumberOfSamples = (int) (MainActivity.WRITE_AUDIO_RATE_SAMPLE_HZ * (pPeriod / 1000.0f));
         // Declare the SampleArray.
@@ -165,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
         final byte[] lGeneration = new byte[lSampleArray.length * 2];
         // Declare the Offset.
         int lOffset = 0;
+
         // Iterate the Transmission.
         for (int i = 0; i < pData.length(); i++) {
             // Fetch the Data.
@@ -294,6 +297,9 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     TextView tv = (TextView)findViewById(R.id.message);
                     tv.setText(tv.getText().toString() + c);
+                    if(tv.getText().toString().lastIndexOf("zzzzz") >= 0) {
+                        tv.setBackgroundColor(0xFF008800);
+                    }
                 }
             });
         } catch (Exception e) {}

@@ -28,9 +28,9 @@ public class OurProcessor implements AudioProcessor, PitchDetectionHandler {
         'k', 'l', 'm', 'n', 'o',
         'p', 'q', 'r', 's', 't',
         'u', 'v', 'w', 'x', 'y',
-        'z', ' ', '0', '1', '2',
+        'z', '\n', '0', '1', '2',
         '3', '4', '5', '6', '7',
-        '8', '9', ',', '.'
+        '8', '9', ',', '.', ' '
     };
 
     private static double[] frequencies;
@@ -60,8 +60,6 @@ public class OurProcessor implements AudioProcessor, PitchDetectionHandler {
                 this);
         }
 
-
-
         frequencies = new double[ALPHABET.length];
         for (int i = 0; i < frequencies.length; i++) {
             frequencies[i] = 500 * Math.pow(1.05, i) + 250;
@@ -85,14 +83,6 @@ public class OurProcessor implements AudioProcessor, PitchDetectionHandler {
         float[] pitchBuffer = new float[smallBufferLength];
         for (int i = 0; i < samples; i++) {
             System.arraycopy(fullBuffer, i * smallBufferLength, pitchBuffer, 0, smallBufferLength);
-
-            /*
-            PitchProcessor processor = new PitchProcessor(
-                    PitchProcessor.PitchEstimationAlgorithm.MPM,
-                    sampleRate,
-                    smallBufferLength,
-                    this);
-            */
 
             AudioEvent littleEvent = new AudioEvent(littleFormat);
             littleEvent.setFloatBuffer(pitchBuffer);
@@ -120,7 +110,7 @@ public class OurProcessor implements AudioProcessor, PitchDetectionHandler {
             double pitch = pitchDetectionResult.getPitch();
             int closestIndex = 0;
 
-            //Log.d(TAG, "Pitch:" + String.valueOf(pitchDetectionResult.getPitch()) + " Confidence:" + String.valueOf(pitchDetectionResult.getProbability()));
+            Log.d("pitch_validation", "Pitch:" + String.valueOf(pitchDetectionResult.getPitch()) + " Confidence:" + String.valueOf(pitchDetectionResult.getProbability()));
 
             for (int i = 0; i < frequencies.length; i++) {
                 if (Math.abs(pitch - frequencies[i]) < Math.abs(pitch - frequencies[closestIndex])) {
