@@ -59,6 +59,9 @@ public class GenomeRx extends AppCompatActivity implements ChirpListener {
 
     @Override
     public void addChar(char c) {
+        if (conditionIndex >= 8) {
+            return;
+        }
         int severity = 0;
         switch (c) {
             case 'a':
@@ -72,6 +75,9 @@ public class GenomeRx extends AppCompatActivity implements ChirpListener {
                 break;
             case 'd':
                 severity = 3;
+                break;
+            case 'e':
+                severity = 4;
                 break;
             default:
                 return;

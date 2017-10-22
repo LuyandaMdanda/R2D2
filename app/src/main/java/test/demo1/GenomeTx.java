@@ -61,7 +61,7 @@ public class GenomeTx extends AppCompatActivity {
   public void sendMessage(View view) {
     //Intent intent = new Intent(this, DisplayMessageActivity.class);
     EditText editText = (EditText) findViewById(R.id.editText);
-    message = editText.getText().toString();
+    message = "adbefcdbbabccd";
     GenomeTx.this.chirp((byte) 100);
     //intent.putExtra(EXTRA_MESSAGE, message);
     //startActivity(intent);
