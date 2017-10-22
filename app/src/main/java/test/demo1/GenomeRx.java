@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class GenomeData extends AppCompatActivity {
+public class GenomeRx extends AppCompatActivity {
 
     private static final String[] CONDITIONS =
             {
