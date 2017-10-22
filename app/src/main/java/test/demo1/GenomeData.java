@@ -81,6 +81,7 @@ public class GenomeData extends AppCompatActivity implements ChirpListener {
                     }
                 });
             } catch (Exception e) {}
+            conditionIndex++;
 
         }
     }
