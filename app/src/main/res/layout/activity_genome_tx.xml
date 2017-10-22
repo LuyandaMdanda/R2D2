@@ -1,10 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context="test.demo1.GenomeTx">
+  android:orientation="vertical"
+  tools:context="test.demo1.MainActivity"
+  android:padding="8dp">
 
-</android.support.constraint.ConstraintLayout>
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+      android:id="@+id/imageView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@mipmap/robot_1"/>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      android:text="R2"
+      android:textSize="24dp"/>
+  </LinearLayout>
+
+  <TextView
+    android:id="@+id/message"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:textSize="16dp"
+    android:text="" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <EditText
+      android:id="@+id/editText"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:ems="10"
+      android:hint="@string/edit_message"
+      android:inputType="textPersonName"/>
+
+    <Button
+      android:id="@+id/button"
+      android:layout_width="135dp"
+      android:layout_height="50dp"
+      android:onClick="sendMessage"
+      android:text="@string/button_send"/>
+  </LinearLayout>
+</LinearLayout>

@@ -31,7 +31,8 @@
         </activity>
         <activity
           android:name=".GenomeTx"
-          android:parentActivityName=".HomeActivity">
+          android:parentActivityName=".HomeActivity"
+          android:theme="@style/Theme.AppCompat.NoActionBar">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
@@ -40,7 +41,8 @@
         </activity>
         <activity
           android:name=".GenomeRx"
-          android:parentActivityName=".HomeActivity">
+          android:parentActivityName=".HomeActivity"
+          android:theme="@style/Theme.AppCompat.NoActionBar">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
