@@ -2,6 +2,7 @@ package test.demo1;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,7 +32,7 @@ public class GenomeRx extends AppCompatActivity implements ChirpListener {
             };
 
 
-    private int conditionIndex;
+    private volatile int conditionIndex;
     private LinearLayout layout;
     private AudioDispatcher dispatcher;
 
@@ -59,9 +60,7 @@ public class GenomeRx extends AppCompatActivity implements ChirpListener {
 
     @Override
     public void addChar(char c) {
-        if (conditionIndex >= 8) {
-            return;
-        }
+        Log.d("addChar", "got: " + c);
         int severity = 0;
         switch (c) {
             case 'a':
@@ -82,20 +81,21 @@ public class GenomeRx extends AppCompatActivity implements ChirpListener {
             default:
                 return;
         }
-        if (conditionIndex < CONDITIONS.length) {
+
             try{
                 final int finalSeverity = severity;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        TextView tv = new TextView(GenomeRx.this);
-                        tv.setText(CONDITIONS[conditionIndex] + ": " + LIKELIHOOD[finalSeverity]);
-                        layout.addView(tv);
+                        if (conditionIndex < CONDITIONS.length) {
+                            TextView tv = new TextView(GenomeRx.this);
+                            tv.setText(CONDITIONS[conditionIndex] + ": " + LIKELIHOOD[finalSeverity]);
+                            layout.addView(tv);
+                            conditionIndex++;
+                        }
                     }
                 });
             } catch (Exception e) {}
-            conditionIndex++;
 
-        }
     }
 }

@@ -18,13 +18,13 @@
           android:id="@+id/imageView"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:background="@mipmap/robot_2"/>
+          android:background="@mipmap/robot_1"/>
 
         <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_margin="16dp"
-          android:text="R2"
+          android:text="D2"
           android:textSize="24dp"/>
     </LinearLayout>
 
