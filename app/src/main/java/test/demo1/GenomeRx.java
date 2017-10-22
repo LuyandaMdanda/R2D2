@@ -51,6 +51,13 @@ public class GenomeRx extends AppCompatActivity implements ChirpListener {
 
 
     @Override
+    protected void onStart()
+    {
+        super.onStart();
+        new Thread(dispatcher).start();
+    }
+
+    @Override
     public void addChar(char c) {
         int severity = 0;
         switch (c) {
