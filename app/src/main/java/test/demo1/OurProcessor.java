@@ -36,13 +36,13 @@ public class OurProcessor implements AudioProcessor, PitchDetectionHandler {
     private static double[] frequencies;
 
     private int samples;
-    private MainActivity activity;
+    private ChirpListener activity;
     private float sampleRate;
     private TarsosDSPAudioFormat format;
     private int[] nextLetterBuffer;
     private int currentVoteIndex;
 
-    public OurProcessor(int samples, MainActivity activity, float sampleRate, AudioDispatcher dispatcher) {
+    public OurProcessor(int samples, ChirpListener activity, float sampleRate, AudioDispatcher dispatcher) {
         this.samples = samples;
         this.activity = activity;
         this.sampleRate = sampleRate;
