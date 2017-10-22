@@ -6,4 +6,12 @@
     android:layout_height="match_parent"
     tools:context="test.demo1.GenomeData">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layout"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

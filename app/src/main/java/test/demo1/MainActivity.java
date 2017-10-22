@@ -37,7 +37,7 @@ import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final char[] ALPHABET = new char[]{
+    public static final char[] ALPHABET = new char[]{
         'a', 'b', 'c', 'd', 'e',
         'f', 'g', 'h', 'i', 'j',
         'k', 'l', 'm', 'n', 'o',
@@ -48,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
         '8', '9', ',', '.', ' '
     };
 
-    private static final int AUDIO_SAMPLE_RATE = 44100;
+    public static final int AUDIO_SAMPLE_RATE = 44100;
     public static final int CHIRP_LEN = 100;
     public static final int SAMPLE_TIME = 30;
-    private static final int MS_PER_SEC = 1000;
+    public static final int MS_PER_SEC = 1000;
     public static final int NUM_SAMPLES = MS_PER_SEC / SAMPLE_TIME;
-    private static final int BUFFER_SIZE = 7800;
+    public static final int BUFFER_SIZE = 7800;
 
 
     private AudioDispatcher dispatcher;
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "tonegen";
 
     /* Sampling Declarations. */
-    private static final int WRITE_AUDIO_RATE_SAMPLE_HZ = 44100; // (Guaranteed for all devices!)
+    public static final int WRITE_AUDIO_RATE_SAMPLE_HZ = 44100; // (Guaranteed for all devices!)
 
     /* Member Variables. */
     private AudioTrack mAudioTrack;
