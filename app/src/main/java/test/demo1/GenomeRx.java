@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class GenomeRx extends AppCompatActivity {
+import be.tarsos.dsp.AudioDispatcher;
+import be.tarsos.dsp.io.android.AudioDispatcherFactory;
+
+public class GenomeRx extends AppCompatActivity implements ChirpListener {
 
     private static final String[] CONDITIONS =
             {
@@ -27,14 +30,59 @@ public class GenomeRx extends AppCompatActivity {
                     "High Risk"
             };
 
+
+    private int conditionIndex;
+    private LinearLayout layout;
+    private AudioDispatcher dispatcher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_genome_data);
 
+        layout = (LinearLayout)findViewById(R.id.layout);
 
-        LinearLayout layout = (LinearLayout)findViewById(R.id.layout);
+        conditionIndex = 0;
+
+        dispatcher = AudioDispatcherFactory.fromDefaultMicrophone(MainActivity.AUDIO_SAMPLE_RATE, MainActivity.BUFFER_SIZE, 0);
+        dispatcher.addAudioProcessor(new OurProcessor(MainActivity.NUM_SAMPLES, this, MainActivity.AUDIO_SAMPLE_RATE,
+                dispatcher));
+    }
 
 
+    @Override
+    public void addChar(char c) {
+        int severity = 0;
+        switch (c) {
+            case 'a':
+                severity = 0;
+                break;
+            case 'b':
+                severity = 1;
+                break;
+            case 'c':
+                severity = 2;
+                break;
+            case 'd':
+                severity = 3;
+                break;
+            default:
+                return;
+        }
+        if (conditionIndex < CONDITIONS.length) {
+            try{
+                final int finalSeverity = severity;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView tv = new TextView(GenomeRx.this);
+                        tv.setText(CONDITIONS[conditionIndex] + ": " + LIKELIHOOD[finalSeverity]);
+                        layout.addView(tv);
+                    }
+                });
+            } catch (Exception e) {}
+            conditionIndex++;
+
+        }
     }
 }

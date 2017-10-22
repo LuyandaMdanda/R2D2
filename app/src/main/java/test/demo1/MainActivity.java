@@ -35,7 +35,7 @@ import be.tarsos.dsp.pitch.PitchDetectionResult;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ChirpListener{
 
     public static final char[] ALPHABET = new char[]{
         'a', 'b', 'c', 'd', 'e',
@@ -91,10 +91,6 @@ public class MainActivity extends AppCompatActivity {
 
         dispatcher = AudioDispatcherFactory.fromDefaultMicrophone(AUDIO_SAMPLE_RATE, BUFFER_SIZE, 0);
         dispatcher.addAudioProcessor(new OurProcessor(NUM_SAMPLES, this, AUDIO_SAMPLE_RATE, dispatcher));
-
-
-
-        builder = new StringBuilder();
     }
 
     /**
