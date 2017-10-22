@@ -7,9 +7,11 @@
     tools:context="test.demo1.MainActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+      android:layout_width="368dp"
+      android:layout_height="495dp"
+      android:orientation="vertical"
+      tools:layout_editor_absoluteY="8dp"
+      tools:layout_editor_absoluteX="8dp">
 
     <EditText
         android:id="@+id/editText"
@@ -43,6 +45,6 @@
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

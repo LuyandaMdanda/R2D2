@@ -35,22 +35,26 @@ import be.tarsos.dsp.pitch.PitchDetectionResult;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
-public class MainActivity extends AppCompatActivity implements PitchDetectionHandler {
+public class MainActivity extends AppCompatActivity {
+
+    private static final char[] ALPHABET = new char[]{
+        'a', 'b', 'c', 'd', 'e',
+        'f', 'g', 'h', 'i', 'j',
+        'k', 'l', 'm', 'n', 'o',
+        'p', 'q', 'r', 's', 't',
+        'u', 'v', 'w', 'x', 'y',
+        'z', ' ', '0', '1', '2',
+        '3', '4', '5', '6', '7',
+        '8', '9', ',', '.'
+    };
 
     private static final int AUDIO_SAMPLE_RATE = 44100;
-    private static final int TONE_TIME = 50;
+    public static final int CHIRP_LEN = 100;
+    public static final int SAMPLE_TIME = 30;
     private static final int MS_PER_SEC = 1000;
-    private static final int NUM_SAMPLES = MS_PER_SEC / TONE_TIME;
+    public static final int NUM_SAMPLES = MS_PER_SEC / SAMPLE_TIME;
     private static final int BUFFER_SIZE = 7800;
-    private static final char[] ALPHABET = new char[]{
-            'a', 'b', 'c', 'd', 'e',
-            'f', 'g', 'h', 'i', 'j',
-            'k', 'l', 'm', 'n', 'o',
-            'p', 'q', 'r', 's', 't',
-            'u', 'v', 'w', 'x', 'y',
-            'z'};
 
-    private double[] frequencies;
 
     private AudioDispatcher dispatcher;
     private Thread listeningThread;
@@ -67,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetectionHan
     /* Member Variables. */
     private AudioTrack mAudioTrack;
     private boolean mChirping;
-    private AudioDispatcher mAudioDispatcher;
+    //private AudioDispatcher mAudioDispatcher;
     private Thread mAudioThread;
 
 
@@ -82,16 +86,13 @@ public class MainActivity extends AppCompatActivity implements PitchDetectionHan
 
         this.mAudioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, MainActivity.WRITE_AUDIO_RATE_SAMPLE_HZ, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, 7168, AudioTrack.MODE_STREAM);
         this.mAudioThread = null;
-        this.mAudioDispatcher = AudioDispatcherFactory.fromDefaultMicrophone(MainActivity.WRITE_AUDIO_RATE_SAMPLE_HZ, 7168, 0); /** TODO: Abstract constants. */
+        //this.mAudioDispatcher = AudioDispatcherFactory.fromDefaultMicrophone(MainActivity.WRITE_AUDIO_RATE_SAMPLE_HZ, 7168, 0); /** TODO: Abstract constants. */
 
 
         dispatcher = AudioDispatcherFactory.fromDefaultMicrophone(AUDIO_SAMPLE_RATE, BUFFER_SIZE, 0);
         dispatcher.addAudioProcessor(new OurProcessor(NUM_SAMPLES, this, AUDIO_SAMPLE_RATE, dispatcher));
 
-        frequencies = new double[ALPHABET.length];
-        for (int i = 0; i < frequencies.length; i++) {
-            frequencies[i] = 1000 * Math.pow(1.05, i) - 250;
-        }
+
 
         builder = new StringBuilder();
     }
@@ -100,12 +101,12 @@ public class MainActivity extends AppCompatActivity implements PitchDetectionHan
      * Called when the user taps the Send button
      */
     public void sendMessage(View view) {
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
+        //Intent intent = new Intent(this, DisplayMessageActivity.class);
         EditText editText = (EditText) findViewById(R.id.editText);
         message = editText.getText().toString();
         MainActivity.this.chirp((byte) 100);
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
+        //intent.putExtra(EXTRA_MESSAGE, message);
+        //startActivity(intent);
     }
 
     private final void chirp(final byte freq) {
@@ -126,13 +127,13 @@ public class MainActivity extends AppCompatActivity implements PitchDetectionHan
             protected Void doInBackground(final Void[] pIsUnused) {
                 // Re-buffer the new tone.
                 //final byte[] lChirp = new byte[100000];
-        /*
-        for(int i = 0; i < lChirp.length; i++) {
-          lChirp[i] = freq;
-        }
-        */
+                /*
+                for(int i = 0; i < lChirp.length; i++) {
+                  lChirp[i] = freq;
+                }
+                */
 
-                final byte[] lChirp = MainActivity.this.onGenerateChirp(message, 100);
+                final byte[] lChirp = MainActivity.this.onGenerateChirp(message, CHIRP_LEN);
                 // Write the ChirpFactory to the Audio buffer.
                 MainActivity.this.getAudioTrack().write(lChirp, 0, lChirp.length);
                 // Satisfy the parent.
@@ -169,14 +170,18 @@ public class MainActivity extends AppCompatActivity implements PitchDetectionHan
             // Fetch the Data.
             final Character lData = Character.valueOf(pData.charAt(i));
             // Fetch the Frequency.
-            final double lFrequency = 1000 * Math.pow(1.05, Character.valueOf(pData.charAt(i)) - 97) - 250;
-            Log.d(TAG, pData.charAt(i) + " " + (1000 * Math.pow(1.00, Character.valueOf(pData.charAt(i)) - 97) - 250));
-            // Iterate the NumberOfSamples. (Per chirp data.)
-            for (int j = 0; j < lNumberOfSamples; j++) {
-                // Update the SampleArray.
-                lSampleArray[lOffset] = Math.sin(2 * Math.PI * j / (MainActivity.WRITE_AUDIO_RATE_SAMPLE_HZ / lFrequency));
-                // Increase the Offset.
-                lOffset++;
+            for(int j = 0; j < ALPHABET.length; j++) {
+                if (ALPHABET[j] == lData) {
+                    final double lFrequency = 500 * Math.pow(1.05, j) + 250;
+                    Log.d(TAG, pData.charAt(i) + " " + (500 * Math.pow(1.05, j) + 250));
+                    // Iterate the NumberOfSamples. (Per chirp data.)
+                    for (int k = 0; k < lNumberOfSamples; k++) {
+                        // Update the SampleArray.
+                        lSampleArray[lOffset] = Math.sin(2 * Math.PI * k / (MainActivity.WRITE_AUDIO_RATE_SAMPLE_HZ / lFrequency));
+                        // Increase the Offset.
+                        lOffset++;
+                    }
+                }
             }
         }
         // Reset the Offset.
@@ -270,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetectionHan
     }
 
     private AudioDispatcher getAudioDispatcher() {
-        return this.mAudioDispatcher;
+        return this.dispatcher;
     }
 
     private final void setAudioThread(final Thread pThread) {
@@ -281,37 +286,17 @@ public class MainActivity extends AppCompatActivity implements PitchDetectionHan
         return this.mAudioThread;
     }
 
-    @Override
-    public void handlePitch(PitchDetectionResult pitchDetectionResult, AudioEvent audioEvent) {
+    public void addChar(final char c) {
 
-
-        if (pitchDetectionResult.getProbability() > 0.90 &&
-                pitchDetectionResult.getPitch() > 650) {
-            double pitch = pitchDetectionResult.getPitch();
-            int closestIndex = 0;
-
-            Log.d("Pitch", String.valueOf(pitchDetectionResult.getPitch()));
-            Log.d("Confidence", String.valueOf(pitchDetectionResult.getProbability()));
-
-            for (int i = 0; i < frequencies.length; i++) {
-                if (Math.abs(pitch - frequencies[i]) < Math.abs(pitch - frequencies[closestIndex])) {
-                    closestIndex = i;
+        try {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView tv = (TextView)findViewById(R.id.message);
+                    tv.setText(tv.getText().toString() + c);
                 }
-            }
-
-            builder.append(ALPHABET[closestIndex]);
-            try {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((TextView) findViewById(R.id.message)).setText(builder.toString());
-                    }
-                });
-
-            } catch (Exception e) {
-
-            }
-        }
+            });
+        } catch (Exception e) {}
     }
 }
 
